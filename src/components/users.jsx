@@ -12,6 +12,10 @@ const Users = () => {
     '',
   ]
 
+  const handleDelete = userId => {
+    setUsers(prevState => prevState.filter(user => user._id !== userId))
+  }
+
   const formatNumber = number => {
     return number === 0
       ? 'Никто не'
@@ -77,10 +81,6 @@ const Users = () => {
         </span>
       )
     })
-  }
-
-  const handleDelete = userId => {
-    setUsers(prevState => prevState.filter(user => user._id !== userId))
   }
 
   if (users.length === 0) {
