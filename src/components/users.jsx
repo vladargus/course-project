@@ -1,52 +1,18 @@
-import React, { useState } from 'react'
-import api from '../api'
+import React from 'react'
+import User from './user'
 
-const Users = () => {
-  const [users, setUsers] = useState(api.users.fetchAll())
-
-  const handleDelete = userId =>
-    setUsers(users.filter(user => user._id !== userId))
-
-  const renderPhrase = number => {
-    const lastOne = Number(number.toString().slice(-1))
-    return !number
-      ? 'Никто не'
-      : lastOne >= 2 && lastOne <= 4 && (number < 5 || number > 14)
-      ? number + ' человека'
-      : number + ' человек'
-  }
-
+const Users = ({ users, ...rest }) => {
   const renderedUsers = users.map(user => (
-    <tr key={user._id}>
-      <td>{user.name}</td>
-      <td>
-        {user.qualities.map(item => (
-          <span className={'badge m-1 bg-' + item.color} key={item._id}>
-            {item.name}
-          </span>
-        ))}
-      </td>
-      <td>{user.profession.name}</td>
-      <td>{user.completedMeetings}</td>
-      <td>{user.rate} /5</td>
-      <td>
-        <button
-          className='btn btn-danger'
-          onClick={() => handleDelete(user._id)}
-        >
-          delete
-        </button>
-      </td>
-    </tr>
+    <User
+      key={user._id}
+      user={user}
+      onDelete={rest.onDelete}
+      onBookmark={rest.onBookmark}
+    />
   ))
 
   return (
     <>
-      <h2>
-        <span className={'badge bg-' + (users.length ? 'primary' : 'danger')}>
-          {renderPhrase(users.length) + ' тусанет с тобой сегодня'}
-        </span>
-      </h2>
       {users.length > 0 && (
         <table className='table'>
           <thead>
@@ -56,6 +22,7 @@ const Users = () => {
               <th scope='col'>Профессия</th>
               <th scope='col'>Встретился, раз</th>
               <th scope='col'>Оценка</th>
+              <th scope='col'>Избранное</th>
               <th />
             </tr>
           </thead>
