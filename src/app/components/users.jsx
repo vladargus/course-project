@@ -1,18 +1,24 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { paginate } from '../utils/paginate'
 import Pagination from './pagination'
 import User from './user'
-import PropTypes from 'prop-types'
 
-const Users = ({ users, ...rest }) => {
-  const count = users.length
-  const pageSize = 4
+const Users = ({ users: allUsers, ...rest }) => {
   const [currentPage, setCurrentPage] = useState(1)
+  const count = allUsers.length
+  const pageSize = 4
+
   const handlePageChange = (pageIndex) => {
     setCurrentPage(pageIndex)
   }
 
-  const userCrop = paginate(users, currentPage, pageSize)
+  const userCrop = paginate(allUsers, currentPage, pageSize)
+
+  // если все элементы на странице удалены, отобразить предыдущую страницу
+  if (!userCrop.length && currentPage > 1) {
+    setCurrentPage(currentPage - 1)
+  }
 
   return (
     <>
@@ -47,7 +53,7 @@ const Users = ({ users, ...rest }) => {
 }
 
 Users.propTypes = {
-  users: PropTypes.array.isRequired
+  users: PropTypes.array
 }
 
 export default Users
