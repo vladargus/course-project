@@ -11,7 +11,7 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
-    indent: ['error', 2], // Отступ, количество пробелов
+    indent: 'off',
     semi: [2, 'never'], // Точка с запятой в конце строки
     'space-before-function-paren': ['error', 'never'], // Ошибка при наличии пробела при обозночении функции, уберём её
     quotes: ['error', 'single', { allowTemplateLiterals: true }] // Использование двойных кавычек
