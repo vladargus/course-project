@@ -13,6 +13,7 @@ export const ProfessionProvider = ({ children }) => {
     const [isLoading, setLoading] = useState(true);
     const [professions, setProfessions] = useState([]);
     const [error, setError] = useState(null);
+
     useEffect(() => {
         if (error !== null) {
             toast(error);
@@ -23,10 +24,12 @@ export const ProfessionProvider = ({ children }) => {
     useEffect(() => {
         getProfessionsList();
     }, []);
+
     function errorCatcher(error) {
         const { message } = error.response.data;
         setError(message);
     }
+
     function getProfession(id) {
         return professions.find((p) => p._id === id);
     }

@@ -13,14 +13,18 @@ const SelectField = ({
     const handleChange = ({ target }) => {
         onChange({ name: target.name, value: target.value });
     };
+
     const getInputClasses = () => {
         return "form-select" + (error ? " is-invalid" : "");
     };
 
     const optionsArray =
         !Array.isArray(options) && typeof options === "object"
-            ? Object.values(options)
-            : options;
+            ? Object.values(options).map((opt) => ({
+                  name: options[opt].name,
+                  value: options[opt]._id
+              }))
+            : options.map((opt) => ({ name: opt.name, value: opt._id }));
 
     return (
         <div className="mb-4">
@@ -40,7 +44,7 @@ const SelectField = ({
                 {optionsArray.length > 0 &&
                     optionsArray.map((option) => (
                         <option value={option.value} key={option.value}>
-                            {option.label}
+                            {option.name}
                         </option>
                     ))}
             </select>

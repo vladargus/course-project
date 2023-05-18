@@ -1,12 +1,22 @@
+const USERID_KEY = "user-local-id";
 const TOKEN_KEY = "jwt-token";
 const REFRESH_KEY = "jwt-refresh-token";
 const EXPIRES_KEY = "jwt-expires";
 
-export function setTokens({ refreshToken, idToken, expiresIn = 3600 }) {
+export function setTokens({
+    localId,
+    refreshToken,
+    idToken,
+    expiresIn = 3600
+}) {
     const expiresDate = new Date().getTime() + expiresIn * 1000;
+    localStorage.setItem(USERID_KEY, localId);
     localStorage.setItem(TOKEN_KEY, idToken);
     localStorage.setItem(REFRESH_KEY, refreshToken);
     localStorage.setItem(EXPIRES_KEY, expiresDate);
+}
+export function getUserId() {
+    return localStorage.getItem(USERID_KEY);
 }
 export function getAccessToken() {
     return localStorage.getItem(TOKEN_KEY);
@@ -14,14 +24,22 @@ export function getAccessToken() {
 export function getRefreshToken() {
     return localStorage.getItem(REFRESH_KEY);
 }
-export function getExpiresToken() {
+export function getTokenExpiresDate() {
     return localStorage.getItem(EXPIRES_KEY);
 }
+export function removeAuthData() {
+    localStorage.removeItem(USERID_KEY);
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(REFRESH_KEY);
+    localStorage.removeItem(EXPIRES_KEY);
+}
 
-const localStorageservice = {
+const localStorageService = {
     setTokens,
+    getUserId,
     getAccessToken,
     getRefreshToken,
-    getExpiresToken
+    getTokenExpiresDate,
+    removeAuthData
 };
-export default localStorageservice;
+export default localStorageService;
