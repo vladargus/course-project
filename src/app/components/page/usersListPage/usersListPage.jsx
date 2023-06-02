@@ -65,11 +65,7 @@ const UsersListPage = () => {
                               .indexOf(searchQuery.toLowerCase()) !== -1
                   )
                 : selectedProf
-                ? data.filter(
-                      (user) =>
-                          JSON.stringify(user.profession) ===
-                          JSON.stringify(selectedProf)
-                  )
+                ? data.filter((user) => user.profession === selectedProf._id)
                 : data;
 
             return filteredUsers.filter((user) => user._id !== currentUser._id);
@@ -101,7 +97,6 @@ const UsersListPage = () => {
                             className="btn btn-secondary mt-2"
                             onClick={clearFilter}
                         >
-                            {" "}
                             Очистить
                         </button>
                     </div>
