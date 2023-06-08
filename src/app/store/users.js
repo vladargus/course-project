@@ -40,7 +40,7 @@ const usersSlice = createSlice({
             state.error = action.payload;
             state.isLoading = false;
         },
-        authRequestSuccess: (state, action) => {
+        authRequestSuccessed: (state, action) => {
             state.auth = action.payload;
             state.isLoggedIn = true;
         },
@@ -59,7 +59,7 @@ const usersSlice = createSlice({
             state.auth = null;
             state.dataLoaded = false;
         },
-        userUpdateSuccess: (state, action) => {
+        userUpdateSuccessed: (state, action) => {
             state.entities[
                 state.entities.findIndex(
                     (user) => user._id === action.payload._id
@@ -77,11 +77,11 @@ const {
     usersRequested,
     usersReceived,
     usersRequestFailed,
-    authRequestSuccess,
+    authRequestSuccessed,
     authRequestFailed,
     userCreated,
     userLoggedOut,
-    userUpdateSuccess
+    userUpdateSuccessed
 } = actions;
 
 const authRequested = createAction("users/authRequested");
@@ -97,7 +97,7 @@ export const logIn =
         dispatch(authRequested());
         try {
             const data = await authService.login({ email, password });
-            dispatch(authRequestSuccess({ userId: data.localId }));
+            dispatch(authRequestSuccessed({ userId: data.localId }));
             localStorageService.setTokens(data);
             history.push(redirect);
         } catch (error) {
@@ -118,7 +118,7 @@ export const signUp =
         try {
             const data = await authService.register({ email, password });
             localStorageService.setTokens(data);
-            dispatch(authRequestSuccess({ userId: data.localId }));
+            dispatch(authRequestSuccessed({ userId: data.localId }));
             dispatch(
                 createUser({
                     _id: data.localId,
@@ -161,7 +161,7 @@ export const updateUser = (payload) => async (dispatch) => {
     dispatch(userUpdateRequested());
     try {
         const { content } = await userService.update(payload);
-        dispatch(userUpdateSuccess(content));
+        dispatch(userUpdateSuccessed(content));
         history.push(`/users/${content._id}`);
     } catch (error) {
         dispatch(userUpdateFailed(error.message));
